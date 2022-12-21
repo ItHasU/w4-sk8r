@@ -51,13 +51,13 @@ export const SYSTEM_HIDE_GAMEPAD_OVERLAY = 2;
 /** Copies pixels to the framebuffer. */
 // @ts-ignore: decorator
 @external("env", "blit")
-export declare function blit (spritePtr: usize, x: i32, y: i32, width: u32, height: u32, flags: u32): void;
+    export declare function blit(spritePtr: usize, x: i32, y: i32, width: u32, height: u32, flags: u32): void;
 
 /** Copies a subregion within a larger sprite atlas to the framebuffer. */
 // @ts-ignore: decorator
 @external("env", "blitSub")
-export declare function blitSub (spritePtr: usize, x: i32, y: i32, width: u32, height: u32,
-    srcX: u32, srcY: u32, stride: i32, flags: u32): void;
+    export declare function blitSub(spritePtr: usize, x: i32, y: i32, width: u32, height: u32,
+        srcX: u32, srcY: u32, stride: i32, flags: u32): void;
 
 export const BLIT_1BPP: u32 = 0;
 export const BLIT_2BPP: u32 = 1;
@@ -68,37 +68,37 @@ export const BLIT_ROTATE: u32 = 8;
 /** Draws a line between two points. */
 // @ts-ignore: decorator
 @external("env", "line")
-export declare function line (x1: i32, y1: i32, x2: i32, y2: i32): void;
+    export declare function line(x1: i32, y1: i32, x2: i32, y2: i32): void;
 
 /** Draws a horizontal line. */
 // @ts-ignore: decorator
 @external("env", "hline")
-export declare function hline (x: i32, y: i32, len: u32): void;
+    export declare function hline(x: i32, y: i32, len: u32): void;
 
 /** Draws a vertical line. */
 // @ts-ignore: decorator
 @external("env", "vline")
-export declare function vline (x: i32, y: i32, len: u32): void;
+    export declare function vline(x: i32, y: i32, len: u32): void;
 
 /** Draws an oval (or circle). */
 // @ts-ignore: decorator
 @external("env", "oval")
-export declare function oval (x: i32, y: i32, width: u32, height: u32): void;
+    export declare function oval(x: i32, y: i32, width: u32, height: u32): void;
 
 /** Draws a rectangle. */
 // @ts-ignore: decorator
 @external("env", "rect")
-export declare function rect (x: i32, y: i32, width: u32, height: u32): void;
+    export declare function rect(x: i32, y: i32, width: u32, height: u32): void;
 
 /** Draws text using the built-in system font. */
-export function text (str: string, x: i32, y: i32): void {
+export function text(str: string, x: i32, y: i32): void {
     const byteLength = load<u32>(changetype<usize>(str) - 4);
     textUtf16(str, byteLength, x, y);
 }
 
 // @ts-ignore: decorator
 @external("env", "textUtf16")
-declare function textUtf16 (text: string, byteLength: u32, x: i32, y: i32): void;
+    declare function textUtf16(text: string, byteLength: u32, x: i32, y: i32): void;
 
 // ┌───────────────────────────────────────────────────────────────────────────┐
 // │                                                                           │
@@ -109,7 +109,7 @@ declare function textUtf16 (text: string, byteLength: u32, x: i32, y: i32): void
 /** Plays a sound tone. */
 // @ts-ignore: decorator
 @external("env", "tone")
-export declare function tone (frequency: u32, duration: u32, volume: u32, flags: u32): void;
+    export declare function tone(frequency: u32, duration: u32, volume: u32, flags: u32): void;
 
 export const TONE_PULSE1: u32 = 0;
 export const TONE_PULSE2: u32 = 1;
@@ -131,12 +131,12 @@ export const TONE_PAN_RIGHT: u32 = 32;
 /** Reads up to `size` bytes from persistent storage into the pointer `destPtr`. */
 // @ts-ignore: decorator
 @external("env", "diskr")
-export declare function diskr (dest: usize, size: u32): u32;
+    export declare function diskr(dest: usize, size: u32): u32;
 
 /** Writes up to `size` bytes from the pointer `srcPtr` into persistent storage. */
 // @ts-ignore: decorator
 @external("env", "diskw")
-export declare function diskw (src: usize, size: u32): u32;
+    export declare function diskw(src: usize, size: u32): u32;
 
 // ┌───────────────────────────────────────────────────────────────────────────┐
 // │                                                                           │
@@ -145,7 +145,7 @@ export declare function diskw (src: usize, size: u32): u32;
 // └───────────────────────────────────────────────────────────────────────────┘
 
 /** Prints a message to the debug console. */
-export function trace (str: string): void {
+export function trace(str: string): void {
     const ptr = changetype<usize>(str);
     const byteLength = load<u32>(ptr - 4);
     traceUtf16(ptr, byteLength);
@@ -153,10 +153,10 @@ export function trace (str: string): void {
 
 // @ts-ignore: decorator
 @external("env", "traceUtf16")
-declare function traceUtf16 (str: usize, byteLength: u32): void;
+    declare function traceUtf16(str: usize, byteLength: u32): void;
 
 // Pass abort messages to trace()
-function abortHandler (message: string | null, fileName: string | null, lineNumber: u32, columnNumber: u32) :void {
+function abortHandler(message: string | null, fileName: string | null, lineNumber: u32, columnNumber: u32): void {
     const ptr = changetype<usize>(message);
     if (ptr != 0) {
         const byteLength = load<u32>(ptr - 4);
@@ -165,6 +165,6 @@ function abortHandler (message: string | null, fileName: string | null, lineNumb
 }
 
 // Avoid requiring an external seed. Call `Math.seedRandom()` to manually seed `Math.random()`.
-function seedHandler (): f64 {
+function seedHandler(): f64 {
     return 0;
 }
