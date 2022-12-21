@@ -1,0 +1,19 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build (debug)",
+			"type": "npm",
+			"script": "build:debug",
+			"group": "build",
+			"problemMatcher": []
+		},
+		{
+			"label": "Run W4",
+			"type": "npm",
+			"script": "start",
+			"group": "none",
+			"problemMatcher": []
+		}
+	]
+}
