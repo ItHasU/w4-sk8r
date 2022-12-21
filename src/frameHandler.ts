@@ -32,8 +32,16 @@ export abstract class AbstractFrameHandler {
 
     //#region Timer -----------------------------------------------------------
 
-    protected _wait_s(seconds: u16): bool {
+    protected _timer_reset(): void {
+        this._framesCount = 0;
+    }
+
+    protected _timer_wait_s(seconds: u16): bool {
         return this._framesCount >= seconds * 60 /*fps*/;
+    }
+
+    protected _timer_wait_f(frames: u16): bool {
+        return this._framesCount >= frames;
     }
 
     //#endregion
