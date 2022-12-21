@@ -1,0 +1,31 @@
+{
+  "name": "w4-sk8r",
+  "version": "0.0.1",
+  "description": "A skater game developped for the WASM-4 platform.",
+  "main": "index.js",
+  "scripts": {
+    "build": "asc --target release",
+    "build:debug": "asc --target debug"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ItHasU/w4-sk8r.git"
+  },
+  "keywords": [
+    "Game",
+    "Runner",
+    "Skate",
+    "WASM",
+    "AssemblyScript",
+    "WASM-4"
+  ],
+  "author": "ItHasU (Matthieu Aubry)",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/ItHasU/w4-sk8r/issues"
+  },
+  "homepage": "https://github.com/ItHasU/w4-sk8r#readme",
+  "devDependencies": {
+    "assemblyscript": "^0.20.14"
+  }
+}
