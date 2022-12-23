@@ -9,6 +9,13 @@
 			"problemMatcher": []
 		},
 		{
+			"label": "Build (release)",
+			"type": "npm",
+			"script": "build",
+			"group": "build",
+			"problemMatcher": []
+		},
+		{
 			"label": "Run W4",
 			"type": "npm",
 			"script": "start",
