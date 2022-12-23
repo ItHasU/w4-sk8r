@@ -2,7 +2,7 @@ import { AbstractFrameHandler, Mode } from "./frameHandler";
 import { Play } from "./play";
 import { SplashScreen } from "./splashscreen";
 
-let frameHandler: AbstractFrameHandler = new SplashScreen();
+let frameHandler: AbstractFrameHandler = new Play();
 
 export function update(): void {
     const nextMode = frameHandler.update();
