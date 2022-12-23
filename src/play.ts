@@ -1,5 +1,8 @@
+import { player_jumping, player_jumpingFlags, player_jumpingHeight, player_jumpingWidth } from "./assets/player-jumping";
+import { player_running, player_runningFlags, player_runningHeight, player_runningWidth } from "./assets/player-running";
 import { AbstractFrameHandler, Mode } from "./frameHandler";
 import * as w4 from "./wasm4";
+
 
 export class Play extends AbstractFrameHandler {
     /** Size of the road in pixels */
@@ -68,41 +71,24 @@ export class Play extends AbstractFrameHandler {
         }
 
         // -- Clear screen --
-        store<u16>(w4.DRAW_COLORS, 1);
-        w4.rect(0, 0, w4.SCREEN_SIZE, w4.SCREEN_SIZE);
+        // Automatically done on each frame
 
         // -- Draw background --
-        store<u16>(w4.DRAW_COLORS, 2);
+        store<u16>(w4.DRAW_COLORS, 3);
         w4.line(
             0, w4.SCREEN_SIZE - 1,
             w4.SCREEN_SIZE, w4.SCREEN_SIZE - 1
         );
-        w4.line(
-            0, w4.SCREEN_SIZE - 1 + this.Y_OFFSET,
-            w4.SCREEN_SIZE, w4.SCREEN_SIZE - 1 + this.Y_OFFSET
-        );
-        const offset_x: i32 = this._position_x % this.ROAD_SIZE + this.ROAD_SIZE;
-        for (let i: i32 = -offset_x; i < i32(w4.SCREEN_SIZE); i += this.ROAD_SIZE) {
-            w4.line(
-                i, this.ROAD_SIZE + w4.SCREEN_SIZE - 1,
-                i + this.X_OFFSET, w4.SCREEN_SIZE - 1 + this.Y_OFFSET
-            );
-        }
-        w4.text(this._globalFramesCount.toString(), 0, 0);
-
-        // -- Draw obstacle --
-        store<u16>(w4.DRAW_COLORS, 2);
-        w4.blit(OBSTACLE_TRASH, this._obstacle_x - this._position_x, w4.SCREEN_SIZE - 16 - 1 - this.ROAD_SIZE / 4, 16, 16, w4.BLIT_1BPP);
+        w4.text("Score: " + this._position_x.toString(), 0, 0);
 
         // -- Draw sprite --
-        store<u16>(w4.DRAW_COLORS, 4);
-        const offset_y: i32 = w4.SCREEN_SIZE - 16 - 1 - this._position_y - this.ROAD_SIZE / 4;
-        if (this._speed_x === 0) {
-            w4.blit(PLAYER_STANDING, 0, offset_y, 16, 16, w4.BLIT_1BPP);
-        } else if (this._speed_x > 0) {
-            w4.blit(PLAYER_RUNNING, 0, offset_y, 16, 16, w4.BLIT_1BPP);
-        } else if (this._speed_x < 0) {
-            w4.blit(PLAYER_RUNNING, 0, offset_y, 16, 16, w4.BLIT_1BPP | w4.BLIT_FLIP_X);
+        store<u16>(w4.DRAW_COLORS, 0x4321);
+        const offset_y: i32 = w4.SCREEN_SIZE - player_jumpingHeight - 1 - this._position_y;
+        if (this._position_y === 0) {
+            w4.blit(player_running, 0, offset_y, player_runningWidth, player_runningHeight, player_runningFlags);
+        } else {
+            w4.blit(player_jumping, 0, offset_y, player_jumpingWidth, player_jumpingHeight, player_jumpingFlags);
+
         }
 
 
@@ -110,64 +96,3 @@ export class Play extends AbstractFrameHandler {
         return Mode.KEEP;
     }
 }
-
-//#region Assets --------------------------------------------------------------
-
-const PLAYER_STANDING = memory.data<u8>([
-    0b11111111, 0b11111111,
-    0b11111111, 0b11111111,
-    0b11111111, 0b11111111,
-    0b11111111, 0b11111111,
-    0b11111110, 0b01111111,
-    0b11111110, 0b01111111,
-    0b11111100, 0b00011111,
-    0b11111010, 0b00101111,
-    0b11110110, 0b00101111,
-    0b11101110, 0b00101111,
-    0b11001110, 0b00101111,
-    0b11001110, 0b10111111,
-    0b11001110, 0b10111111,
-    0b11001110, 0b10111111,
-    0b11001110, 0b10111111,
-    0b11001100, 0b10011111,
-]);
-
-const PLAYER_RUNNING = memory.data<u8>([
-    0b11111111, 0b11111111,
-    0b11111110, 0b01111111,
-    0b11111110, 0b01111111,
-    0b11111000, 0b00000011,
-    0b11110100, 0b01111111,
-    0b11101100, 0b01111111,
-    0b11011100, 0b01111111,
-    0b11111100, 0b01111111,
-    0b11111101, 0b01111111,
-    0b11111101, 0b01111111,
-    0b11111101, 0b01111111,
-    0b11111101, 0b01111111,
-    0b11111101, 0b01111111,
-    0b11111101, 0b01111111,
-    0b11110000, 0b00000111,
-    0b11111011, 0b11101111,
-]);
-
-const OBSTACLE_TRASH = memory.data<u8>([
-    0b11111111, 0b11111111,
-    0b11111111, 0b11111111,
-    0b11111111, 0b11111111,
-    0b11111111, 0b11111111,
-    0b11111111, 0b11111111,
-    0b11111111, 0b11111111,
-    0b11111111, 0b11111111,
-    0b11111111, 0b11111111,
-    0b11111111, 0b11111111,
-    0b11111111, 0b11111111,
-    0b11111110, 0b01111111,
-    0b11111000, 0b00011111,
-    0b11111100, 0b00111111,
-    0b11111100, 0b00111111,
-    0b11111100, 0b00111111,
-    0b11111100, 0b00111111,
-]);
-
-//#endregion
