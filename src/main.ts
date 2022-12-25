@@ -1,8 +1,9 @@
 import { AbstractFrameHandler, Mode } from "./frameHandler";
 import { Play } from "./play";
+import { Score } from "./score";
 import { SplashScreen } from "./splashscreen";
 
-let frameHandler: AbstractFrameHandler = new Play();
+let frameHandler: AbstractFrameHandler = new Score();
 
 export function update(): void {
     const nextMode = frameHandler.update();
@@ -13,6 +14,9 @@ export function update(): void {
                 break;
             case Mode.PLAY:
                 frameHandler = new Play();
+                break;
+            case Mode.SCORE:
+                frameHandler = new Score();
                 break;
         }
     }

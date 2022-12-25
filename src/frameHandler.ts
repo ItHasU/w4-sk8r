@@ -1,10 +1,14 @@
+import * as w4 from "./wasm4";
+
+
 export enum Mode {
     /** Keep current mode */
     KEEP = 0,
 
     // -- Different modes for the application --
     SPLASHSCREEN,
-    PLAY
+    PLAY,
+    SCORE
 }
 
 export abstract class AbstractFrameHandler {
@@ -42,6 +46,50 @@ export abstract class AbstractFrameHandler {
 
     protected _timer_wait_f(frames: u16): bool {
         return this._framesCount >= frames;
+    }
+
+    //#endregion
+
+    //#region Score -----------------------------------------------------------
+
+    public getLastScore(): u64 {
+        const ptr = memory.data(2 * sizeof<u64>());
+        w4.diskr(ptr, 2 * sizeof<u64>());
+
+        return load<u64>(ptr);
+    }
+
+    public getBestScore(): u64 {
+        const ptr = memory.data(2 * sizeof<u64>());
+        w4.diskr(ptr, 2 * sizeof<u64>());
+
+        return load<u64>(ptr + 1 * sizeof<u64>());
+    }
+
+    /**
+     *  Save last score and update high score if needed 
+     * @returns true if score is better than previous highscore.
+     */
+    public setLastScore(score: u64): bool {
+        let better: bool = false;
+        // Reserve some memory to exchange data with the storage
+        const ptr = memory.data(2 * sizeof<u64>());
+        // Read data from the disk
+        w4.diskr(ptr, 2 * sizeof<u64>());
+
+        let highscore: u64 = load<u64>(ptr + 1 * sizeof<u64>());
+        if (score > highscore) {
+            highscore = score;
+            better = true;
+        }
+
+        // First we need to store the value somewhere in memory to get a pointer
+        store<u64>(ptr + 0 * sizeof<u64>(), score);
+        store<u64>(ptr + 1 * sizeof<u64>(), highscore);
+        // Then we write the data
+        w4.diskw(ptr, 2 * sizeof<u64>());
+
+        return better;
     }
 
     //#endregion

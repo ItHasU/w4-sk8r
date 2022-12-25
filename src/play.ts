@@ -57,6 +57,14 @@ export class Play extends AbstractFrameHandler {
             }
         }
 
+        // DEBUG
+        if (gamepad & w4.BUTTON_2) {
+            // DEBUG: Save score and exit
+            this.setLastScore(this._position_x);
+            return Mode.SCORE;
+        }
+
+
         // -- Handle speed --
         this._position_x += this._speed_x;
         this._position_y += this._speed_y;
