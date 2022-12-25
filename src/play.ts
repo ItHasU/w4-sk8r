@@ -145,12 +145,12 @@ export class Play extends AbstractFrameHandler {
                 // Obstacle is not visible yet
                 continue;
             }
-            w4.blit(obstacle_trash, i32(obstacle_x - this._position_x), this.ROAD_Y - obstacle_trashWidth, obstacle_trashWidth, obstacle_trashHeight, obstacle_trashFlags);
+            w4.blit(obstacle_trash, i32(obstacle_x - this._position_x), this.ROAD_Y - obstacle_trashHeight, obstacle_trashWidth, obstacle_trashHeight, obstacle_trashFlags);
         }
 
         // -- Draw player sprite --
         store<u16>(w4.DRAW_COLORS, 0x4320);
-        const offset_y: i32 = this.ROAD_Y - player_runningHeight - 1 - this._position_y;
+        const offset_y: i32 = this.ROAD_Y - player_runningHeight - this._position_y;
         if (this._position_y === 0) {
             w4.blit(player_running, 0, offset_y, player_runningWidth, player_runningHeight, player_runningFlags);
         } else {
