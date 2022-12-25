@@ -14,7 +14,7 @@ export class Play extends AbstractFrameHandler {
     protected readonly ROAD_Y: u8 = u8(w4.SCREEN_SIZE - 1);
 
     /** Player velocity (x, pixels/frame) */
-    protected _speed_x: i8 = 0;
+    protected _speed_x: i8 = 1;
     /** Player velocity (y, pixels/frame) */
     protected _speed_y: i8 = 0;
     /** Current position of the player (x, pixels) */
@@ -91,10 +91,30 @@ export class Play extends AbstractFrameHandler {
             }
         }
 
+        // Handle collisions
+        for (let i: i32 = 0; i < this._obstacles.length; i++) {
+            const obstacle_x: u64 = this._obstacles[i];
+            if (this._position_x + player_runningWidth < obstacle_x + 12) {
+                // Player is not yet on the obstacle
+                continue;
+            }
+            if (obstacle_x + 20 < this._position_x) {
+                // Player has passed the obstacle
+                continue;
+            }
+
+            // Player is on the obstacle
+            if (this._position_y < 5) {
+                // Collision
+                this.setLastScore(this._position_x);
+                return Mode.SCORE;
+            }
+        }
+
         // Make sure wa have enough obstacles planned
         let start_x = this._obstacles.length > 0 ? this._obstacles[this._obstacles.length - 1] : this._position_x;
         while (this._obstacles.length < 5) {
-            start_x += this.JUMP_HEIGHT * 2 + u64(Math.floor(Math.random() * w4.SCREEN_SIZE));
+            start_x += w4.SCREEN_SIZE / 2 + u64(Math.floor(Math.random() * w4.SCREEN_SIZE));
             // Generate some new obstacle
             this._obstacles.push(start_x);
         }
@@ -104,7 +124,7 @@ export class Play extends AbstractFrameHandler {
 
         // -- Score --
         store<u16>(w4.DRAW_COLORS, 3);
-        w4.text("Score: " + this._position_x.toString(), 0, 0);
+        w4.text("Score: " + this._position_x.toString(), 5, 5);
 
         // -- Ground --
         store<u16>(w4.DRAW_COLORS, 3);

@@ -3,7 +3,7 @@ import { Play } from "./play";
 import { Score } from "./score";
 import { SplashScreen } from "./splashscreen";
 
-let frameHandler: AbstractFrameHandler = new Score();
+let frameHandler: AbstractFrameHandler = new SplashScreen();
 
 export function update(): void {
     const nextMode = frameHandler.update();

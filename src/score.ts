@@ -7,6 +7,7 @@ export class Score extends AbstractFrameHandler {
 
     /** Position of the road */
     protected readonly ROAD_Y: u8 = u8(w4.SCREEN_SIZE - 1);
+    protected exitNext: bool = false;
 
     constructor() {
         super();
@@ -15,6 +16,9 @@ export class Score extends AbstractFrameHandler {
     protected _update_impl(): Mode {
         const gamepad = load<u8>(w4.GAMEPAD1);
         if (gamepad & w4.BUTTON_1) {
+            this.exitNext = true;
+        }
+        if (this.exitNext && !(gamepad & w4.BUTTON_1)) {
             return Mode.SPLASHSCREEN;
         }
 
